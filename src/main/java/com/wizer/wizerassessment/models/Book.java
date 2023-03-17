@@ -1,9 +1,12 @@
 package com.wizer.wizerassessment.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 @Data
@@ -20,5 +23,11 @@ public class Book {
     private Long isbn;
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Category category;
+
+    @JsonManagedReference
+    public Category getCategory() {
+        return category;
+    }
 }

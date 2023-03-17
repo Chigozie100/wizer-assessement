@@ -1,5 +1,6 @@
 package com.wizer.wizerassessment.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +21,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Book> books;
 
+    @JsonBackReference
+    public List<Book> getBooks() {
+        return books;
+    }
 }
