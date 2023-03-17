@@ -3,7 +3,9 @@ package com.wizer.wizerassessment.controllers;
 
 import com.wizer.wizerassessment.models.Book;
 import com.wizer.wizerassessment.payloads.requests.BookRequestDto;
+import com.wizer.wizerassessment.payloads.requests.FavoriteBookRequestDto;
 import com.wizer.wizerassessment.payloads.responses.BookResponseDto;
+import com.wizer.wizerassessment.payloads.responses.FavoriteBookResponseDto;
 import com.wizer.wizerassessment.service.BookService;
 import com.wizer.wizerassessment.utils.Constants;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/v1/")
 @RestController
@@ -29,7 +33,6 @@ public class BookController {
         return new ResponseEntity<>(service.editBook(requestDto, id), HttpStatus.OK);
     }
 
-    //GET /users?pageNo=0&pageSize=10&sortBy=id
     @GetMapping("/books")
     public ResponseEntity<Page<Book>> getBooks(@RequestParam(defaultValue = Constants.PAGENO) Integer pageNo,
                                                @RequestParam(defaultValue = Constants.PAGESIZE) Integer pageSize,
@@ -43,10 +46,9 @@ public class BookController {
         }
     }
 
-    @PostMapping("/{userId}/favorite-books/{bookId}")
-    public ResponseEntity<String> addFavoriteBook(@PathVariable Long userId, @PathVariable Long bookId) {
-        service.addFavoriteBook(userId, bookId);
-        return new ResponseEntity<>(service.addFavoriteBook(userId, bookId), HttpStatus.CREATED);
+    @PostMapping("/createFavoriteBooks")
+    public ResponseEntity<List<FavoriteBookResponseDto>> addFavoriteBook(@RequestBody List<FavoriteBookRequestDto> requestDto) {
+        return new ResponseEntity<>(service.addFavoriteBooks(requestDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteBook/{bookId}")
